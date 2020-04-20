@@ -1,0 +1,57 @@
+
+# Since we're installing Gems, let's use Ruby.
+language: ruby
+rvm:
+    - 2.6.5
+
+cache:
+    directories:
+        - $HOME/.rvm/
+    timeout: 1000
+
+jobs:
+    include:
+
+        - stage: "Build and test"
+          os: osx
+          osx_image: xcode10  # macOS 10.13 high_sierra
+          install:
+              - echo "`build.sh` takes care of its own dependencies (gcc)"
+          script:
+              - ./build.sh
+              - ./bin/hello-homebrew-packaging
+        - os: osx
+          osx_image: xcode11.3  # macOS 10.14 mojave
+          install:
+              - echo "`build.sh` takes care of its own dependencies (gcc)"
+          script:
+              - ./build.sh
+              - ./bin/hello-homebrew-packaging
+
+        - stage: "Bottle and upload, then gather and publish"
+          if: tag IS present
+          os: osx
+          osx_image: xcode10  # macOS 10.13 high_sierra
+          install:
+              - echo "Nothing to install"
+          script:
+              - ./automation/bottle-and-upload.sh
+          deploy:
+              provider: script
+              # Let's put this command in the deploy step; why not.
+              script: ./automation/gather-and-publish.sh
+              on:
+                  tags: true
+        - if: tag IS present
+          os: osx
+          osx_image: xcode11.3  # macOS 10.14 mojave
+          install:
+              - echo "Nothing to install"
+          script:
+              - ./automation/bottle-and-upload.sh
+          deploy:
+              provider: script
+              # Let's put this command in the deploy step; why not.
+              script: ./automation/gather-and-publish.sh
+              on:
+                  tags: true

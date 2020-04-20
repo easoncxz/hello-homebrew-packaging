@@ -1,0 +1,51 @@
+
+name: Build and maybe release
+
+on:
+  # When commits are pushed to the master branch
+  push:
+    branches: [ master ]
+
+  # Or when a tag is pushed to Github
+  create:
+    type: ['tag']
+
+env:
+    EASONCXZ_GITHUB_OAUTH_TOKEN_v2: "${{ secrets.EASONCXZ_GITHUB_OAUTH_TOKEN_v2 }}"
+    EASONCXZ_BINTRAY_API_KEY: "${{ secrets.EASONCXZ_BINTRAY_API_KEY }}"
+
+jobs:
+
+  test:
+    runs-on: [macos]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build
+        run: ./build.sh
+
+      - name: Run tests
+        run: |
+          echo "No tests. Let's say the program's good as long as we can launch it."
+          ./bin/hello-homebrew-packaging
+
+  release:
+    runs-on: [macos]
+
+    # Don't bother creating a release if tests aren't passing
+    needs: test
+
+    # Run this job only if this workflow is triggered by a tag creation
+    if: github.event_name == 'create'
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # No need to run `./build.sh` again; Homebrew does that anyway.
+
+      - name: Bottle and upload
+        run: ./automation/bottle-and-upload.sh
+
+      - name: Gather and publish
+        run: ./automation/gather-and-publish.sh
