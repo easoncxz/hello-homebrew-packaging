@@ -22,14 +22,29 @@ A program to demonstrate Homebrew packaging
     Untapped 3 formulae (58 files, 112.1KB).
 
 Everything interesting and worthwhile about this repo is not in the code.
-Rather, please look at the [Wiki][wiki] (which I've spent a lot of time
-writing!), or look at the CI configurations:
+Rather, look at these things:
 
-- Travis CI, as per [`.travis.yml`](.travis.yml)
-- Github Actions, as per [`.github/workflows/main.yml`](.github/workflows/main.yml)
+- My [`homebrew-tap`][tap-repo] Github repository, in particular the
+  [`Formula/hello-homebrew-packaging`][formula] file.
 
-This demo project accompanies an automation tool I created:
-[`easoncxz/homebrew_automation`][auto] repo.
+- My Bintray repository:
+  [`bintray.com/easoncxz/homebrew-bottles`][bintray-repo]
 
+- The Continuous Integration configuration of this repo:
+    - Travis CI as per [`.travis.yml`](.travis.yml)
+    - Github Actions as per
+      [`.github/workflows/main.yml`](.github/workflows/main.yml)
+
+- An automation tool I created: [`easoncxz/homebrew_automation`][auto]. This
+  tool is being used from shell scripts in the [`automation/`](automation/)
+  directory of this repo.
+
+For a guided tour of the Mac Homebrew package publishing workflows, please head
+over to the [Wiki][wiki], where I show you in detail how this repo is set up
+from scratch, and in particular, my process of figuring things out.
+
+[bintray-repo]: https://bintray.com/easoncxz/homebrew-bottles
+[tap-repo]: https://github.com/easoncxz/homebrew-tap
+[formula]: https://github.com/easoncxz/homebrew-tap/blob/master/Formula/hello-homebrew-packaging.rb
 [auto]: https://github.com/easoncxz/homebrew-automation
 [wiki]: https://github.com/easoncxz/hello-homebrew-packaging/wiki
